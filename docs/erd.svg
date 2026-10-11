@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="290" viewBox="0 0 720 290" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif" font-size="14">
+  <rect width="720" height="290" fill="#ffffff"/>
+
+  <!-- Products -->
+  <g transform="translate(30,20)">
+    <rect width="260" height="248" rx="6" fill="#fff" stroke="#3465a4" stroke-width="2"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h248 a6,6 0 0 1 6,6 v30 h-260 z" fill="#3465a4"/>
+    <text x="130" y="24" text-anchor="middle" fill="#fff" font-weight="bold" font-size="15">Products (상품)</text>
+    <g fill="#222">
+      <text x="14" y="62"><tspan font-weight="bold">ProductId</tspan></text><text x="246" y="62" text-anchor="end" fill="#b22222" font-weight="bold">PK</text>
+      <text x="14" y="92">ProductCode</text><text x="246" y="92" text-anchor="end" fill="#888">상품코드</text>
+      <text x="14" y="122">ProductName</text><text x="246" y="122" text-anchor="end" fill="#888">상품명</text>
+      <text x="14" y="152">Category</text><text x="246" y="152" text-anchor="end" fill="#888">분류</text>
+      <text x="14" y="182">UnitPrice</text><text x="246" y="182" text-anchor="end" fill="#888">단가</text>
+      <text x="14" y="212">Stock</text><text x="246" y="212" text-anchor="end" fill="#888">현재고</text>
+      <text x="14" y="242">SafetyStock</text><text x="246" y="242" text-anchor="end" fill="#888">안전재고</text>
+    </g>
+  </g>
+
+  <!-- StockHistory -->
+  <g transform="translate(430,20)">
+    <rect width="260" height="248" rx="6" fill="#fff" stroke="#2e8b57" stroke-width="2"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h248 a6,6 0 0 1 6,6 v30 h-260 z" fill="#2e8b57"/>
+    <text x="130" y="24" text-anchor="middle" fill="#fff" font-weight="bold" font-size="15">StockHistory (입출고 이력)</text>
+    <g fill="#222">
+      <text x="14" y="62"><tspan font-weight="bold">HistoryId</tspan></text><text x="246" y="62" text-anchor="end" fill="#b22222" font-weight="bold">PK</text>
+      <text x="14" y="92">ProductId</text><text x="246" y="92" text-anchor="end" fill="#3465a4" font-weight="bold">FK</text>
+      <text x="14" y="122">IoType</text><text x="246" y="122" text-anchor="end" fill="#888">입고/출고</text>
+      <text x="14" y="152">Quantity</text><text x="246" y="152" text-anchor="end" fill="#888">수량</text>
+      <text x="14" y="182">StockAfter</text><text x="246" y="182" text-anchor="end" fill="#888">처리 후 재고</text>
+      <text x="14" y="212">Memo</text><text x="246" y="212" text-anchor="end" fill="#888">비고</text>
+      <text x="14" y="242">CreatedAt</text><text x="246" y="242" text-anchor="end" fill="#888">일시</text>
+    </g>
+  </g>
+
+  <!-- 1 : N relation (Products.ProductId -> StockHistory.ProductId) -->
+  <g stroke="#555" stroke-width="2" fill="none">
+    <path d="M290,77 H360 V107 H430"/>
+    <line x1="300" y1="69" x2="300" y2="85"/>
+    <line x1="306" y1="69" x2="306" y2="85"/>
+    <line x1="430" y1="107" x2="416" y2="99"/>
+    <line x1="430" y1="107" x2="416" y2="115"/>
+    <line x1="410" y1="99" x2="410" y2="115"/>
+  </g>
+  <text x="312" y="70" font-size="13" fill="#555">1</text>
+  <text x="396" y="98" font-size="13" fill="#555">N</text>
+</svg>

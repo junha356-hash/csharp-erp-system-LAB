@@ -13,23 +13,12 @@ C# WinForms + MS-SQL 기반의 재고관리 업무 프로그램입니다.
 C# / .NET 8 · Windows Forms · MS-SQL Server · ADO.NET
 
 ## 시스템 구조
-```mermaid
-flowchart LR
-    subgraph App["WinForms 애플리케이션"]
-        UI["UI<br/>MainForm · 각 탭 화면"]
-        Repo["Data<br/>ProductRepository<br/>StockRepository"]
-        Model["Models<br/>Product · StockHistory"]
-        UI --> Repo
-        Repo -.-> Model
-    end
-    subgraph DB["MS-SQL Server"]
-        SP["저장 프로시저<br/>usp_StockInOut<br/>usp_GetDashboard"]
-        T[("Products<br/>StockHistory")]
-        SP --> T
-    end
-    Repo -- "ADO.NET (SqlClient)" --> SP
-    Repo -- "파라미터 쿼리" --> T
-```
+
+![시스템 구조](docs/architecture.svg)
+
+## ERD
+
+![ERD](docs/erd.svg)
 
 ## 주요 기능
 - 대시보드: 재고 현황 요약, 분류별 집계

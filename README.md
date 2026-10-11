@@ -12,6 +12,61 @@ C# WinForms + MS-SQL 기반의 재고관리 업무 프로그램입니다.
 ## 기술 스택
 C# / .NET 8 · Windows Forms · MS-SQL Server · ADO.NET
 
+## 시스템 구조
+```mermaid
+flowchart LR
+    subgraph App["WinForms 애플리케이션"]
+        UI["UI<br/>MainForm · 각 탭 화면"]
+        Repo["Data<br/>ProductRepository<br/>StockRepository"]
+        Model["Models<br/>Product · StockHistory"]
+        UI --> Repo
+        Repo -.-> Model
+    end
+    subgraph DB["MS-SQL Server"]
+        SP["저장 프로시저<br/>usp_StockInOut<br/>usp_GetDashboard"]
+        T[("Products<br/>StockHistory")]
+        SP --> T
+    end
+    Repo -- "ADO.NET (SqlClient)" --> SP
+    Repo -- "파라미터 쿼리" --> T
+```
+
+## ERD
+```mermaid
+erDiagram
+    Products ||--o{ StockHistory : "입출고"
+    Products {
+        int ProductId PK
+        nvarchar ProductCode UK "상품코드"
+        nvarchar ProductName "상품명"
+        nvarchar Category "분류"
+        decimal UnitPrice "단가"
+        int Stock "현재고"
+        int SafetyStock "안전재고"
+    }
+    StockHistory {
+        bigint HistoryId PK
+        int ProductId FK
+        char IoType "IN / OUT"
+        int Quantity "수량"
+        int StockAfter "처리 후 재고"
+        nvarchar Memo "비고"
+        datetime2 CreatedAt "일시"
+    }
+```
+
+## 입출고 처리 흐름
+```mermaid
+flowchart TD
+    A["입고/출고 요청"] --> B["트랜잭션 시작"]
+    B --> C["재고 조회 + 행 잠금"]
+    C --> D{"출고 수량 > 재고?"}
+    D -- 예 --> E["롤백 후 오류 메시지"]
+    D -- 아니오 --> F["재고 수정"]
+    F --> G["이력 저장"]
+    G --> H["커밋"]
+```
+
 ## 주요 기능
 - 대시보드: 재고 현황 요약, 분류별 집계
 - 상품 관리: 검색·필터, 등록/수정/삭제, 안전재고 미달 강조
@@ -38,6 +93,15 @@ C# / .NET 8 · Windows Forms · MS-SQL Server · ADO.NET
 ### 3. 업무 오류 메시지 전달
 - **문제**: 프로시저 내부 오류(재고 부족 등)가 사용자에게 DB 오류 그대로 노출됨
 - **해결**: 프로시저에서 `THROW 50001~`로 업무 오류 번호를 지정하고, C#에서 `SqlException.Number`로 구분해 사용자용 메시지로 변환 (중복 코드 `2627` 등도 별도 처리)
+
+## 폴더 구조
+```
+├─ database/        DB 스크립트 (스키마, 샘플 데이터)
+└─ src/InventoryManager/
+   ├─ Models/       데이터 모델
+   ├─ Data/         DB 접근 (Repository)
+   └─ UI/           화면
+```
 
 ## 실행 방법
 1. SQL Server Express 설치 (인스턴스 `SQLEXPRESS`)

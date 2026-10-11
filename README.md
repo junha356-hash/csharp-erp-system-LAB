@@ -31,42 +31,6 @@ flowchart LR
     Repo -- "파라미터 쿼리" --> T
 ```
 
-## ERD
-```mermaid
-erDiagram
-    Products ||--o{ StockHistory : "입출고"
-    Products {
-        int ProductId PK
-        nvarchar ProductCode UK "상품코드"
-        nvarchar ProductName "상품명"
-        nvarchar Category "분류"
-        decimal UnitPrice "단가"
-        int Stock "현재고"
-        int SafetyStock "안전재고"
-    }
-    StockHistory {
-        bigint HistoryId PK
-        int ProductId FK
-        char IoType "IN / OUT"
-        int Quantity "수량"
-        int StockAfter "처리 후 재고"
-        nvarchar Memo "비고"
-        datetime2 CreatedAt "일시"
-    }
-```
-
-## 입출고 처리 흐름
-```mermaid
-flowchart TD
-    A["입고/출고 요청"] --> B["트랜잭션 시작"]
-    B --> C["재고 조회 + 행 잠금"]
-    C --> D{"출고 수량 > 재고?"}
-    D -- 예 --> E["롤백 후 오류 메시지"]
-    D -- 아니오 --> F["재고 수정"]
-    F --> G["이력 저장"]
-    G --> H["커밋"]
-```
-
 ## 주요 기능
 - 대시보드: 재고 현황 요약, 분류별 집계
 - 상품 관리: 검색·필터, 등록/수정/삭제, 안전재고 미달 강조
